@@ -6,8 +6,6 @@ return [
     'senderName' => 'Example.com mailer',
     'user.passwordResetTokenExpire' => 3600,
     'user.passwordMinLength' => 8,
-//    'instaLogin'=>'mitkrivich',
-//    'instaPass'=>'rRiNacka',
     'instaLogin'=>'ballroom_ru',
     'instaPass'=>'09DSd6tD5UZa',
 	'instaConsoleProxy'=>'http://63TpS1:QnSyHsLmKG@188.130.142.232:2200',
