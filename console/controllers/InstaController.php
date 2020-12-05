@@ -15,6 +15,8 @@ use Phpfastcache\Helper\Psr16Adapter;
 use Yii;
 use yii\console\Controller;
 use yii\helpers\Console;
+use yii\mutex\FileMutex;
+use yii\mutex\Mutex;
 
 /**
  * Console controller
@@ -55,8 +57,10 @@ class InstaController extends Controller
             $setting=Setting::find()->one();
             $isError=false;
             $cronFile=Yii::getAlias('@app/cronInsta.txt');
-            if (file_exists($cronFile))
-            {
+            $mutexName='insta';
+            $mutex = new FileMutex();
+            if (!$mutex->acquire($mutexName)) {
+                // business logic execution
                 $this->stdout('cron service alredy runnning! exit cron', Console::FG_RED, Console::BLINK);
                 $this->stdout(PHP_EOL);
                 return false;
@@ -99,6 +103,7 @@ class InstaController extends Controller
             $this->stdout('!!!Error '.$ex->getMessage(), Console::FG_RED, Console::BLINK);
             $this->stdout(PHP_EOL);
             $this->isError=true;
+            $mutex->release($mutexName);
             return false;
         }
 
@@ -171,9 +176,8 @@ class InstaController extends Controller
                     $ex->getMessage();
                    $this->stdout('!!!Error '.$nick->name.', '.$ex->getMessage(), Console::FG_RED, Console::BLINK);
                    $this->stdout(PHP_EOL);
-                   if (file_exists($cronFile))
-                        unlink($cronFile);
                    $this->isError=true;
+                  $mutex->release($mutexName);
                 //    return false;
                 }
 
@@ -190,8 +194,7 @@ class InstaController extends Controller
                   $this->stdout('Done with error!', Console::FG_RED, Console::BOLD);
                }
             $this->stdout(PHP_EOL);
-            if (file_exists($cronFile))
-              unlink($cronFile);
+            $mutex->release($mutexName);
         return true;
     }
 
