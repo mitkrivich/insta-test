@@ -1,7 +1,8 @@
-<?php use yii\bootstrap4\ActiveForm;
+<?php
+/* @var $this yii\web\View */
+/* @var $model \common\models\Posts */
+/* @var $user \common\models\User */
 use yii\helpers\Html;
-use yii\helpers\Url;
-use yii\helpers\VarDumper;
 $this->title = $user->name.':: Посты пользователя';
 $this->params['breadcrumbs'][] = $this->title;
 ?>

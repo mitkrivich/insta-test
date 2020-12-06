@@ -1,19 +1,14 @@
 <?php
-
+/* @var $this yii\web\View */
+/* @var $model \backend\models\CronForm */
 use yii\bootstrap4\ActiveForm;
 use yii\bootstrap4\Html;
-use yii\helpers\Url;
-use yii\helpers\VarDumper;
 $this->title = 'Тест для Instagram :: Управление процессом обновления ленты';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-
 <div class="site-index">
-
-
     <div class="body-content mb-5">
         <h3>Настройка обновления ленты</h3>
-
 <?php
 $form = ActiveForm::begin(['id' => 'instagram-form']); ?>
 <div class="form-group">

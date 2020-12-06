@@ -1,22 +1,13 @@
 <?php
-
 /* @var $this yii\web\View */
-
-use common\models\Carusel;
+/* @var $model Posts */
+/* @var $setting Setting */
 use common\models\Posts;
 use common\models\Setting;
-use InstagramScraper\Instagram;
-use Phpfastcache\Helper\Psr16Adapter;
 use yii\helpers\Html;
-use yii\helpers\Url;
-use yii\helpers\VarDumper;
-use yii\widgets\Pjax;
-
 $this->title = 'Тест для Instagram :: Последние 10 постов выбранных пользователей';
 ?>
 <div class="site-index">
-
-
     <div class="body-content">
         <?php
         $interval=$setting->updateMinute*1000*60;

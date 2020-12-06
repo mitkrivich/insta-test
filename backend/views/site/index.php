@@ -1,12 +1,11 @@
 <?php
-
 /* @var $this yii\web\View */
-
-
+/* @var $dataProvider ActiveDataProvider */
+/* @var $searchModel \common\models\InstagramSearch */
 use kartik\grid\GridView;
+use yii\data\ActiveDataProvider;
 use yii\helpers\Html;
 use yii\helpers\Url;
-use yii\helpers\VarDumper;
 use yii\widgets\Pjax;
 
 $this->title = 'Тест для Instagram :: BackEnd';
