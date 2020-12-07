@@ -7,10 +7,6 @@ namespace common\models;
 use InstagramScraper\Instagram;
 use Phpfastcache\Helper\Psr16Adapter;
 use Yii;
-use yii\base\Model;
-use yii\db\ActiveRecord;
-use yii\debug\models\search\Log;
-use yii\helpers\VarDumper;
 /**
  * Форма добавления нового пользователя
 */
@@ -43,13 +39,11 @@ class InstaForm extends InstagramTable
     public function  validateName($attribute) {
         try {
              $instagram = Instagram::withCredentials(new \GuzzleHttp\Client(['proxy' =>Yii::$app->params['proxy']]), Yii::$app->params['instaLogin'], Yii::$app->params['instaPass'], new Psr16Adapter('files'));
-
-           // $instagram = Instagram::withCredentials(new \GuzzleHttp\Client(), Yii::$app->params['instaLogin'], Yii::$app->params['instaPass'], new Psr16Adapter('files'));
-            $instagram->setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.198 Safari/537.36');
-            $instagram->setCustomCookies($newCookie); //можно записать куки чтобы не авторизоваться каждый раз, отложили для будущей доработки
-            $instagram->login();
-            $instagram->saveSession();
-            $account = $instagram->getAccount($this->name);
+             $instagram->setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.198 Safari/537.36');
+             $instagram->setCustomCookies($newCookie);
+             $instagram->login();
+             $instagram->saveSession();
+             $account = $instagram->getAccount($this->name);
             //если закрытый аккаунт от нас сообщаем об этом
             if ($account->isPrivate()) {
                 $this->addError($attribute, 'Пользователь закрыл доступ к своему аккаунту и я на него не подписан. :(');
@@ -59,7 +53,6 @@ class InstaForm extends InstagramTable
                 $this->closedMediaCount=$account->getMediaCount();
                 $this->closedFollowedByCount=$account->getFollowedByCount();
                 $this->closedFollowsCount=$account->getFollowsCount();
-                VarDumper::dump($account, 10, true);
             }
             else {
                 $this->isPrivate = false;
@@ -69,7 +62,6 @@ class InstaForm extends InstagramTable
                 }
 
                  else {
-                      //  VarDumper::dump($account, 10, true);
                         $this->fullName = $account->getFullName();
                         $this->instagramId = $account->getId();
                         $this->mediaCount = $account->getMediaCount();
@@ -83,11 +75,6 @@ class InstaForm extends InstagramTable
         catch (\Exception $exception) {
              $this->addError($attribute, $exception->getMessage());
         }
-
-
-
-
-     //$this->addError('login','Данный логин уже занят. Попробуйте другой вариант.');
     }
 
 

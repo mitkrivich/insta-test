@@ -18,8 +18,6 @@ $this->params['breadcrumbs'][] = $this->title;
                 $i++;
                 $collapsed='collapsed';
                 $classCollapse='collapse show';
-
-
                 if ($i!=1) {
                     $collapsed = '';
                     $classCollapse='collapse';
@@ -38,7 +36,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     <div class="card-body">
                         <div class="row">
                         <div class="col-lg-6 col-md-6 col-sm-6"><?= Html::img($post->imageUrl,['class' => 'img-responsive img-fluid']); ?></div>
-                        <div class="col-lg-6 col-md-6 col-sm-6"><?=nl2br($post->caption)?></div>
+                        <div class="col-lg-6 col-md-6 col-sm-6"><?=nl2br(htmlspecialchars($post->caption))?></div>
 
                         </div>
                     </div>
