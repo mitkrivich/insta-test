@@ -56,6 +56,7 @@ class InstaController extends Controller
         try {
              $setting = Setting::find()->one();
              $isError = false;
+            //mutex
              $mutexName = 'insta';
              $mutex = new FileMutex();
              if (!$mutex->acquire($mutexName)) {
@@ -64,10 +65,9 @@ class InstaController extends Controller
                 $this->stdout(PHP_EOL);
                 return false;
              }
+            //коннект к Instagram
             $this->stdout('cron service runnning!', Console::FG_GREY, Console::BLINK);
             $this->stdout(PHP_EOL);
-
-            $nicks = InstagramTable::find()->all();
             $this->stdout('InstagramTable::find()->all();');
             $this->stdout(PHP_EOL);
             $this->stdout('User=' . Yii::$app->params['instaLogin'] . PHP_EOL);
@@ -101,10 +101,12 @@ class InstaController extends Controller
             return false;
         }
         //цикл по пользователям
+        $nicks = InstagramTable::find()->all();
         foreach ($nicks as $nick) {
             try {
                 //старт транзакции
                 $transaction = Yii::$app->db->beginTransaction();
+
                 //загрзука информации из Instagram
                 $nick->loadInfo($instagram, $this);
                 $setting = Setting::find()->one();
@@ -117,8 +119,10 @@ class InstaController extends Controller
                     $this->stdout('Done with error!', Console::FG_RED, Console::BOLD);
                 }
                 $this->stdout(PHP_EOL);
+
                 //подтверждение транзакции
                 $transaction->commit();
+
                 //снятие блокировки запуска
                 $mutex->release($mutexName);
             } catch (\Exception $ex) {

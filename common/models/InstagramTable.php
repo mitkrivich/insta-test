@@ -95,6 +95,7 @@ class InstagramTable extends ActiveRecord
             $post->likesCount = $row->getLikesCount();
             $post->commentsCount = $row->getCommentsCount();
             $post->save(false);
+            //сохраняем карусели если они существуют
             if ($row->getType() == 'sidecar') {
                 foreach ($row->getSidecarMedias() as $carusel) {
                     $caruselTable = $post->findCarusel($carusel->getId());
